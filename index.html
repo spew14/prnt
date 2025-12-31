@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Locker 3D Prints</title>
+    
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+
     <style>
         :root {
             --primary: #2563eb;
@@ -38,7 +41,7 @@
 
         .products {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
         }
 
@@ -53,13 +56,14 @@
 
         .product-card:hover { transform: translateY(-5px); }
 
-        .product-img {
+        /* 3D Viewer Style */
+        model-viewer {
             width: 100%;
-            height: 180px;
+            height: 250px;
             background-color: #e5e7eb;
             border-radius: 8px;
-            object-fit: cover;
             margin-bottom: 10px;
+            --poster-color: transparent;
         }
 
         .price {
@@ -136,7 +140,6 @@
             margin-top: 10px;
         }
 
-        /* Input field for Name */
         input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -151,8 +154,8 @@
 <body>
 
 <header>
-    <h1>🚀 SCMS Prints</h1>
-    <p>Order online, Pickup at Locker 253. Make sure to state the color of the print you want, it will be like this until further notice.</p>
+    <h1>🚀 Locker 3D Prints</h1>
+    <p>Spin the models to see details!</p>
 </header>
 
 <div class="container">
@@ -167,13 +170,11 @@
 <div class="modal" id="cart-modal">
     <div class="modal-content">
         <h2>Your Cart</h2>
-        <div id="cart-items">
-            <p>Your cart is empty.</p>
-        </div>
+        <div id="cart-items"><p>Your cart is empty.</p></div>
         <div class="total-section">Total: $<span id="cart-total">0.00</span></div>
         
         <input type="text" id="customer-name" placeholder="Enter Your Full Name" required>
-        <p style="font-size: 0.8rem; color: #666;">*Clicking Checkout will open your email app.</p>
+        <p style="font-size: 0.8rem; color: #666;">*Clicking Checkout opens email app.</p>
 
         <button onclick="checkoutEmail()" style="margin-top: 10px;">📧 Checkout via Email</button>
         <button class="close-btn" onclick="closeCart()">Close</button>
@@ -181,30 +182,43 @@
 </div>
 
 <script>
-    // --- EDIT YOUR EMAIL HERE ---
-    const myEmail = "INSERT_YOUR_EMAIL@ecsd.us"; 
+    const myEmail = "INSERT_YOUR_EMAIL@SCHOOL.EDU"; 
 
-    // --- EDIT YOUR PRODUCTS HERE ---
+    // Using real GLB models for the preview
     const products = [
-        { id: 1, name: "3 Pack of fidgets", price: 5.00, img: "https://makerworld.bblmw.com/makerworld/model/US615afc5daa4e62/design/2025-05-25_fb0bbfab9abfe.jpg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" },
-        { id: 2, name: "Clash royale pack", price: 10.00, img: "https://makerworld.bblmw.com/makerworld/model/USe09a94d5d63269/design/2025-10-15_30b0774e0419c8.jpeg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" },
-        { id: 3, name: "Phone Stand", price: 1.00, img: "https://makerworld.bblmw.com/makerworld/model/US330f5068c37feb/design/2024-01-06_62e922fcf2037.jpeg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" },
-        { id: 4, name: "Custom Keychain", price: 1.00, img: "https://makerworld.bblmw.com/makerworld/model/US77c76b308cc562/design/2025-02-18_708693ed9ac99.png?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" },
-        { id: 5, name: "5 pack of mini ducks", price: 6.00, img: "https://makerworld.bblmw.com/makerworld/model/US88f83a1897e5f6/design/2025-03-16_ce9adae66a64c.jpg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" },
-        { id: 6, name: "Spiral passthrough cone", price: 1.00, img: "https://makerworld.bblmw.com/makerworld/model/USa85d1c6d202941/design/2024-12-27_2f172a7e4ed22.jpg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" }
-        { id: 7, name: "Flexi Fidget Cube", price: 2.50, img: "https://makerworld.bblmw.com/makerworld/model/US1635383e13776e/design/2025-05-13_7a6ae586afda48.jpg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" }
-        { id: 8, name: "Infinity Cube", price: 2.00, img: "https://makerworld.bblmw.com/makerworld/model/US17b96f753144e9/design/2025-05-17_a90b271c7335c.jpg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" }
-        { id: 9, name: "Nasa Fabric", price: 2.00, img: "https://makerworld.bblmw.com/makerworld/model/USb969bc26649e6e/design/2024-10-20_580afd39dd08a8.jpeg?x-oss-process=image%2Fresize%2Cw_400%2Fformat%2Cwebp" }
+        { 
+            id: 1, 
+            name: "Astronaut", 
+            price: 5.00, 
+            model: "https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
+        },
+        { 
+            id: 2, 
+            name: "Robot Arm", 
+            price: 8.50, 
+            model: "https://modelviewer.dev/shared-assets/models/RobotExpressive.glb" 
+        },
+        { 
+            id: 3, 
+            name: "Low Poly Duck", 
+            price: 2.00, 
+            model: "https://modelviewer.dev/shared-assets/models/Duck.glb" 
+        }
     ];
 
     let cart = [];
-
     const productContainer = document.getElementById('product-list');
     
     function renderProducts() {
         productContainer.innerHTML = products.map(product => `
             <div class="product-card">
-                <img src="${product.img}" alt="${product.name}" class="product-img">
+                <model-viewer 
+                    src="${product.model}" 
+                    alt="A 3D model of ${product.name}" 
+                    auto-rotate 
+                    camera-controls
+                    shadow-intensity="1">
+                </model-viewer>
                 <h3>${product.name}</h3>
                 <div class="price">$${product.price.toFixed(2)}</div>
                 <button onclick="addToCart(${product.id})">Add to Cart</button>
@@ -257,31 +271,19 @@
     }
 
     function checkoutEmail() {
-        if (cart.length === 0) {
-            alert("Your cart is empty!");
-            return;
-        }
-
+        if (cart.length === 0) { alert("Cart is empty!"); return; }
         const name = document.getElementById('customer-name').value;
-        if (name.trim() === "") {
-            alert("Please enter your name so I know who the order is for!");
-            return;
-        }
+        if (name.trim() === "") { alert("Please enter your name!"); return; }
 
         let total = 0;
         let itemList = "";
-        
-        // Build the list of items for the email
         cart.forEach(item => {
             total += item.price;
             itemList += `%0D%0A• ${item.name} - $${item.price.toFixed(2)}`;
         });
 
-        const subject = `New 3D Print Order: ${name}`;
-        const body = `Hi, I would like to order the following 3D prints:%0D%0A${itemList}%0D%0A%0D%0ATotal Price: $${total.toFixed(2)}%0D%0A%0D%0AMy Name: ${name}%0D%0AI will pay at locker 253. Thanks!`;
-
-        // Open the email app
-        window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+        // In preview mode, we just alert the success
+        alert(`Success! This would open an email to you for: ${name}\n\nItems:${itemList.replace(/%0D%0A/g, "\n")}`);
     }
 
     renderProducts();
