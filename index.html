@@ -221,8 +221,9 @@
 
 <div class="container">
     <div class="intro">
-        <h1>Freshly Printed.(yall need to lowk suggest more prints)</h1>
+        <h1>Freshly Printed.</h1>
         <p>Order online. Pickup & Pay at <strong>Locker 253</strong>.</p>
+        <p style="font-size: 0.9rem; color: #888; margin-top:5px;">(yall need to lowk suggest more prints)</p>
     </div>
 
     <div class="grid" id="product-grid">
@@ -260,7 +261,7 @@
     const myEmail = "yourname@ecsd.us";
 
     // 2. Add your items below. 
-    // Just copy a block inside { ... }, paste it, and change the details.
+    // I fixed the syntax error (missing comma) here:
     const products = [
         {
             id: 1,
@@ -297,18 +298,17 @@
             name: "Blanket Fidget",
             price: 5.00,
             image: "https://makerworld.bblmw.com/makerworld/model/US2e230a38334cc9/design/2024-12-18_73ca0f4294103.jpeg?x-oss-process=image/resize,w_1000/format,webp"
-        }
+        },
         {
-            id: 7,  // Make sure this number is different for every item
+            id: 7, 
             name: "Star Fidget",
             price: 3.00,
             image: "https://makerworld.bblmw.com/makerworld/model/US315ad26a65a9e/design/2024-09-23_4a173a1c6e039.png?x-oss-process=image/resize,w_1000/format,webp"
-},
-        
+        }
     ];
 
     // ======================================================
-    // ⚠️ DO NOT EDIT BELOW THIS LINE (Unless you know code)
+    // ⚠️ DO NOT EDIT BELOW THIS LINE
     // ======================================================
 
     let cart = [];
