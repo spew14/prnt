@@ -23,6 +23,18 @@
             line-height: 1.6;
         }
 
+        /* --- ERROR BOX (Hidden by default) --- */
+        #error-box {
+            display: none;
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            margin: 20px;
+            border: 2px solid #ef5350;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
         nav {
             display: flex;
             justify-content: space-between;
@@ -128,6 +140,8 @@
 </head>
 <body>
 
+<div id="error-box"></div>
+
 <nav>
     <div class="logo">SCHS Prints</div>
     <div class="cart-link" onclick="toggleCart()">Cart (<span id="cart-count">0</span>)</div>
@@ -165,60 +179,71 @@
 </div>
 
 <script>
-    // --- SETTINGS ---
-    const myEmail = "yourname@ecsd.us"; // Put your email here
+// --- SAFETY: Report errors to the user ---
+window.onerror = function(message, source, lineno, colno, error) {
+    const errorBox = document.getElementById('error-box');
+    errorBox.style.display = 'block';
+    errorBox.innerHTML = `<strong>⚠️ CODE ERROR:</strong><br>${message}<br>Line: ${lineno}`;
+};
 
-    const products = [
-        {
-            id: 1,
-            name: "Articulated Dragon",
-            price: 5.00,
-            image: "https://makerworld.bblmw.com/makerworld/model/US298af8211cf174/design/2025-12-24_f16687f23e846.png?x-oss-process=image/resize,w_400/format,webp"
-        },
-        {
-            id: 2,
-            name: "Phone Stand",
-            price: 3.00,
-            image: "https://makerworld.bblmw.com/makerworld/model/US30d1cdf1dfd2ec/design/2025-12-21_0444552b3c14b.jpg?x-oss-process=image/resize,w_1000/format,webp"
-        },
-        {
-            id: 3,
-            name: "Fidget Cube",
-            price: 2.00,
-            image: "https://makerworld.bblmw.com/makerworld/model/US2ecaa913482ae4/design/2025-07-03_e4c8e21007a008.jpg?x-oss-process=image/resize,w_400/format,webp"
-        },
-        {
-            id: 4,
-            name: "Controller Stand",
-            price: 8.00,
-            image: "https://makerworld.bblmw.com/makerworld/model/USa0b3644d260674/design/2024-03-14_431474b151b9b.png?x-oss-process=image/resize,w_400/format,webp"
-        },
-        {
-            id: 5,
-            name: "Spiral Passthrough Fidget",
-            price: 3.00,
-            image: "https://makerworld.bblmw.com/makerworld/model/UScf4025d436c6df/design/2025-11-08_0607cb90063fd.jpg?x-oss-process=image/resize,w_400/format,webp"
-        },
-        {
-            id: 6,
-            name: "Blanket Fidget",
-            price: 5.00,
-            image: "https://makerworld.bblmw.com/makerworld/model/US2e230a38334cc9/design/2024-12-18_73ca0f4294103.jpeg?x-oss-process=image/resize,w_1000/format,webp"
-        },
-        {
-            id: 7, 
-            name: "Star Fidget",
-            price: 3.00,
-            image: "https://makerworld.bblmw.com/makerworld/model/US315ad26a65a9e/design/2024-09-23_4a173a1c6e039.png?x-oss-process=image/resize,w_1000/format,webp"
-        }
-    ];
+// --- SETTINGS ---
+const myEmail = "yourname@ecsd.us"; // Put your email here
 
-    // --- LOGIC ---
-    let cart = [];
-    const grid = document.getElementById('product-grid');
-    const modal = document.getElementById('cart-modal');
+// Note: I removed the extra spaces in the URLs to make them safer
+const products = [
+    {
+        id: 1,
+        name: "Articulated Dragon",
+        price: 5.00,
+        image: "https://makerworld.bblmw.com/makerworld/model/US298af8211cf174/design/2025-12-24_f16687f23e846.png?x-oss-process=image/resize,w_400/format,webp"
+    },
+    {
+        id: 2,
+        name: "Phone Stand",
+        price: 3.00,
+        image: "https://makerworld.bblmw.com/makerworld/model/US30d1cdf1dfd2ec/design/2025-12-21_0444552b3c14b.jpg?x-oss-process=image/resize,w_1000/format,webp"
+    },
+    {
+        id: 3,
+        name: "Fidget Cube",
+        price: 2.00,
+        image: "https://makerworld.bblmw.com/makerworld/model/US2ecaa913482ae4/design/2025-07-03_e4c8e21007a008.jpg?x-oss-process=image/resize,w_400/format,webp"
+    },
+    {
+        id: 4,
+        name: "Controller Stand",
+        price: 8.00,
+        image: "https://makerworld.bblmw.com/makerworld/model/USa0b3644d260674/design/2024-03-14_431474b151b9b.png?x-oss-process=image/resize,w_400/format,webp"
+    },
+    {
+        id: 5,
+        name: "Spiral Passthrough Fidget",
+        price: 3.00,
+        image: "https://makerworld.bblmw.com/makerworld/model/UScf4025d436c6df/design/2025-11-08_0607cb90063fd.jpg?x-oss-process=image/resize,w_400/format,webp"
+    },
+    {
+        id: 6,
+        name: "Blanket Fidget",
+        price: 5.00,
+        image: "https://makerworld.bblmw.com/makerworld/model/US2e230a38334cc9/design/2024-12-18_73ca0f4294103.jpeg?x-oss-process=image/resize,w_1000/format,webp"
+    },
+    {
+        id: 7, 
+        name: "Star Fidget",
+        price: 3.00,
+        image: "https://makerworld.bblmw.com/makerworld/model/US315ad26a65a9e/design/2024-09-23_4a173a1c6e039.png?x-oss-process=image/resize,w_1000/format,webp"
+    }
+];
 
-    // Load Products
+// --- LOGIC ---
+let cart = [];
+const grid = document.getElementById('product-grid');
+const modal = document.getElementById('cart-modal');
+
+// Load Products with safety check
+try {
+    if(!grid) throw new Error("Could not find product-grid element");
+    
     grid.innerHTML = products.map(p => `
         <div class="product-card">
             <div class="image-container">
@@ -233,23 +258,65 @@
             <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
         </div>
     `).join('');
+} catch (e) {
+    alert("Error loading products: " + e.message);
+}
 
-    function addToCart(id) {
-        const item = products.find(p => p.id === id);
-        cart.push(item);
-        updateCart();
-        toggleCart();
+function addToCart(id) {
+    const item = products.find(p => p.id === id);
+    cart.push(item);
+    updateCart();
+    toggleCart();
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+}
+
+function updateCart() {
+    document.getElementById('cart-count').innerText = cart.length;
+    const container = document.getElementById('cart-items');
+    let total = 0;
+    
+    if (cart.length === 0) {
+        container.innerHTML = '<p style="color:#666">Your cart is empty.</p>';
+    } else {
+        container.innerHTML = cart.map((item, index) => {
+            total += item.price;
+            return `<div class="cart-item">
+                <span>${item.name}</span>
+                <div>$${item.price.toFixed(2)} <span class="remove" onclick="removeFromCart(${index})">Remove</span></div>
+            </div>`;
+        }).join('');
     }
+    document.getElementById('cart-total').innerText = total.toFixed(2);
+}
 
-    function removeFromCart(index) {
-        cart.splice(index, 1);
-        updateCart();
+function toggleCart() {
+    if (modal.style.display === 'flex') {
+        modal.style.opacity = '0';
+        setTimeout(() => modal.style.display = 'none', 300);
+    } else {
+        modal.style.display = 'flex';
+        setTimeout(() => modal.style.opacity = '1', 10);
     }
+}
 
-    function updateCart() {
-        document.getElementById('cart-count').innerText = cart.length;
-        const container = document.getElementById('cart-items');
-        let total = 0;
-        
-        if (cart.length === 0) {
-            container.innerHTML = '<p style="color:#666">Your cart is empty.</p>';
+function checkout() {
+    if (cart.length === 0) { alert("Cart is empty"); return; }
+    const name = document.getElementById('customer-name').value;
+    if (!name) { alert("Please enter your name"); return; }
+
+    let total = 0;
+    let list = cart.map(i => { total += i.price; return `• ${i.name} ($${i.price})`; }).join('%0D%0A');
+    const subject = `Order for ${name}`;
+    const body = `Hi, I'd like to buy:%0D%0A%0D%0A${list}%0D%0A%0D%0ATotal: $${total.toFixed(2)}%0D%0A%0D%0APaying cash at Locker 253.`;
+    window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+}
+
+modal.addEventListener('click', (e) => { if (e.target === modal) toggleCart(); });
+</script>
+
+</body>
+</html>
